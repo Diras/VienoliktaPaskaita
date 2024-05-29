@@ -63,6 +63,17 @@ namespace VienoliktaPaskaita.Services
             }
         }
 
+        public void UpdateAuthor(Author author, int id)
+        {
+            using (IDbConnection db = new SqlConnection(_connectionString))
+            {
+                const string sql = "UPDATE Authors " +
+                                   "SET FirstName = @FirstName, LastName = @LastName, BirthDate = @BirthDate, Country = @Country " +
+                                   "WHERE Id = @Id";
+                db.Execute(sql, new { author.FirstName, author.LastName, author.BirthDate, author.Country, Id = id });
+            }
+        }
+
         public void DeleteAuthor(int Id)
         {
             using (IDbConnection db = new SqlConnection(_connectionString))

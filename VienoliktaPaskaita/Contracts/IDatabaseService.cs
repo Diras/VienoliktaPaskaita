@@ -18,5 +18,7 @@ namespace VienoliktaPaskaita.Contracts
         public IEnumerable<Book> GetBookDetails();
 
         public IEnumerable<BookCopy> GetBookCopyDetails();
+
+        public void UpdateAuthor(Author author, int id);
     }
 }

@@ -19,8 +19,15 @@ namespace VienoliktaPaskaita
 
             //Author author1 = new Author("Ernestas", "Rachmangulovas", new DateTime(1990,02,17), "Lietuva");
             Console.WriteLine("Iveskite: Varda, Pavarde, Gimimo data, Sali!");
-            //Author author2 = new Author(Console.ReadLine(), Console.ReadLine(), DateTime.Parse(Console.ReadLine()), Console.ReadLine() );
-            //databaseService.InsertAuthor(author2);
+            Author author2 = new Author(Console.ReadLine(), Console.ReadLine(), DateTime.Parse(Console.ReadLine()), Console.ReadLine() );
+            databaseService.InsertAuthor(author2);
+
+            mainFunkcijos.IsvestiAutorius(databaseService);
+            Console.WriteLine("Iveskite ID kurio autoriaus duomenis norite pakeisti");
+            int id = int.Parse(Console.ReadLine());
+            Console.WriteLine("Iveskite naujusDuomenis Vardas, Pavarde, Gimimo data, Sali:");
+            Author author3 = new Author(Console.ReadLine(), Console.ReadLine(), DateTime.Parse(Console.ReadLine()), Console.ReadLine());
+            databaseService.UpdateAuthor(author3, id);
 
             mainFunkcijos.IsvestiAutorius(databaseService);
 
