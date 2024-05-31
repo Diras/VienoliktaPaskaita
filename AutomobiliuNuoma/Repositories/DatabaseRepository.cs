@@ -8,6 +8,7 @@ using Dapper;
 using AutomobiliuNuoma.Models;
 using System.Data;
 using System.Data.SqlClient;
+using System.Globalization;
 
 namespace AutomobiliuNuoma.Repositories
 {
@@ -34,10 +35,12 @@ namespace AutomobiliuNuoma.Repositories
                     A.Metai, 
                     A.RegistracijosNumeris, 
                     N.BakoTalpa,
-                    E.BaterijosTalpa
+                    E.BaterijosTalpa,
+                    APK.Kaina
                 FROM Automobiliai A
                 LEFT JOIN NaftosKuroAutomobiliai N ON A.Id = N.Id
                 LEFT JOIN Elektromobiliai E ON A.Id = E.Id
+                LEFT JOIN AutomobiliuParosKaina APK ON A.Id = APK.Id
                 ";
                 var queryResult = db.Query<dynamic>(sql);
 
@@ -47,11 +50,11 @@ namespace AutomobiliuNuoma.Repositories
                 {
                     if (row.BakoTalpa != null)
                     {
-                        automobiliai.Add(new NaftosKuroAutomobilis(row.Id, row.Marke, row.Modelis, row.Metai, row.RegistracijosNumeris, row.BakoTalpa));
+                        automobiliai.Add(new NaftosKuroAutomobilis(row.Id, row.Marke, row.Modelis, row.Metai, row.RegistracijosNumeris, row.BakoTalpa, decimal.Parse(row.Kaina.ToString(), CultureInfo.GetCultureInfo("lt-LT"))));
                     }
                     else if (row.BaterijosTalpa != null)
                     {
-                        automobiliai.Add(new Elektromobilis(row.Id, row.Marke, row.Modelis, row.Metai, row.RegistracijosNumeris, row.BaterijosTalpa));
+                        automobiliai.Add(new Elektromobilis(row.Id, row.Marke, row.Modelis, row.Metai, row.RegistracijosNumeris, row.BaterijosTalpa, decimal.Parse(row.Kaina.ToString(), CultureInfo.GetCultureInfo("lt-LT"))));
                     }
                     else
                     {
@@ -77,12 +80,36 @@ namespace AutomobiliuNuoma.Repositories
                     A.Modelis, 
                     A.Metai, 
                     A.RegistracijosNumeris, 
-                    N.BakoTalpa
+                    N.BakoTalpa,
+                    APK.Kaina
                 FROM Automobiliai A
-                INNER JOIN NaftosKuroAutomobiliai N ON A.Id = N.Id
-                ";
+                LEFT JOIN NaftosKuroAutomobiliai N ON A.Id = N.Id
+                LEFT JOIN AutomobiliuParosKaina APK ON A.Id = APK.Id
+            ";
 
-                    return db.Query<NaftosKuroAutomobilis>(sql);
+                    var queryResult = db.Query<dynamic>(sql);
+                    List<NaftosKuroAutomobilis> result = new List<NaftosKuroAutomobilis>();
+
+                    foreach (var row in queryResult)
+                    {
+                        if(row.BakoTalpa != null)
+                        {
+                            NaftosKuroAutomobilis automobilis = new NaftosKuroAutomobilis(
+                            row.Id,
+                            row.Marke,
+                            row.Modelis,
+                            row.Metai,
+                            row.RegistracijosNumeris,
+                            row.BakoTalpa,
+                            decimal.Parse(row.Kaina.ToString(), CultureInfo.GetCultureInfo("lt-LT"))
+                            );
+                            result.Add(automobilis);
+                        
+                        }
+                        
+                        
+                    }
+                    return result;
                 }
                 else if (tipas == "Elektromobilis")
                 {
@@ -93,15 +120,36 @@ namespace AutomobiliuNuoma.Repositories
                     A.Modelis, 
                     A.Metai, 
                     A.RegistracijosNumeris, 
-                    E.BaterijosTalpa
+                    E.BaterijosTalpa,
+                    APK.Kaina
                 FROM Automobiliai A
-                INNER JOIN Elektromobiliai E ON A.Id = E.Id
-                ";
+                LEFT JOIN Elektromobiliai E ON A.Id = E.Id
+                LEFT JOIN AutomobiliuParosKaina APK ON A.Id = APK.Id
+            ";
 
-                    return db.Query<Elektromobilis>(sql);
+                    var queryResult = db.Query<dynamic>(sql);
+                    List<Elektromobilis> result = new List<Elektromobilis>();
+
+                    foreach (var row in queryResult)
+                    {
+                        if (row.BaterijosTalpa != null)
+                        {
+                            Elektromobilis automobilis = new Elektromobilis(
+                            row.Id,
+                            row.Marke,
+                            row.Modelis,
+                            row.Metai,
+                            row.RegistracijosNumeris,
+                            row.BaterijosTalpa,
+                            decimal.Parse(row.Kaina.ToString(), CultureInfo.GetCultureInfo("lt-LT"))
+                            );
+                            result.Add(automobilis);
+                        }
+                    }
+                    return result;
                 }
 
-                return db.Query<Automobilis>(sql);
+                return Enumerable.Empty<Automobilis>();
             }
         }
         public Automobilis GautiAutomobiliPagalId(int id)
@@ -116,10 +164,12 @@ namespace AutomobiliuNuoma.Repositories
                 A.Metai, 
                 A.RegistracijosNumeris, 
                 N.BakoTalpa,
-                E.BaterijosTalpa
+                E.BaterijosTalpa,
+                APK.Kaina
             FROM Automobiliai A
             LEFT JOIN NaftosKuroAutomobiliai N ON A.Id = N.Id
             LEFT JOIN Elektromobiliai E ON A.Id = E.Id
+            LEFT JOIN AutomobiliuParosKaina APK ON A.Id = APK.Id
             WHERE A.Id = @id
             ";
 
@@ -131,11 +181,11 @@ namespace AutomobiliuNuoma.Repositories
                 {
                     if (row.BakoTalpa != null)
                     {
-                        automobilis = new NaftosKuroAutomobilis(row.Id, row.Marke, row.Modelis, row.Metai, row.RegistracijosNumeris, row.BakoTalpa);
+                        automobilis = new NaftosKuroAutomobilis(row.Id, row.Marke, row.Modelis, row.Metai, row.RegistracijosNumeris, row.BakoTalpa, decimal.Parse(row.Kaina.ToString(), CultureInfo.GetCultureInfo("lt-LT")));
                     }
                     else if (row.BaterijosTalpa != null)
                     {
-                        automobilis = new Elektromobilis(row.Id, row.Marke, row.Modelis, row.Metai, row.RegistracijosNumeris, row.BaterijosTalpa);
+                        automobilis = new Elektromobilis(row.Id, row.Marke, row.Modelis, row.Metai, row.RegistracijosNumeris, row.BaterijosTalpa, decimal.Parse(row.Kaina.ToString(), CultureInfo.GetCultureInfo("lt-LT")));
                     }
                     else
                     {
@@ -165,12 +215,20 @@ namespace AutomobiliuNuoma.Repositories
                     const string sqlNafta = "INSERT INTO NaftosKuroAutomobiliai (Id, BakoTalpa) " +
                                    "VALUES (@Id, @Bakotalpa)";
                     db.Execute(sqlNafta, new { Id = newId, naftosKuroAutomobilis.BakoTalpa });
+
+                    const string sqlKaina = "INSERT INTO AutomobiliuParosKaina (Id, Kaina) " +
+                   "VALUES (@Id, @Kaina)";
+                    db.Execute(sqlKaina, new { Id = newId, naftosKuroAutomobilis.Kaina });
                 }
                 else if (automobilis is Elektromobilis elektromobilis)
                 {
                     const string sqlElektra = "INSERT INTO Elektromobiliai (Id, BaterijosTalpa) " +
                                    "VALUES (@Id, @BaterijosTalpa)";
                     db.Execute(sqlElektra, new { Id = newId, elektromobilis.BaterijosTalpa });
+
+                    const string sqlKaina = "INSERT INTO AutomobiliuParosKaina (Id, Kaina) " +
+                   "VALUES (@Id, @Kaina)";
+                    db.Execute(sqlKaina, new { Id = newId, elektromobilis.Kaina });
                 }
             }
         }
@@ -193,6 +251,11 @@ namespace AutomobiliuNuoma.Repositories
                         "SET BakoTalpa = @Bakotalpa " +
                         "WHERE Id = @Id";
                     db.Execute(sqlNafta, new { naftosKuroAutomobilis.BakoTalpa, Id = id});
+
+                    const string sqlKaina = "UPDATE AutomobiliuParosKaina " +
+                        "SET Id = @Id, Kaina = @Kaina " +
+                        "WHERE Id = @Id";
+                    db.Execute(sqlKaina, new { Id = id, naftosKuroAutomobilis.Kaina });
                 }
                 else if (automobilis is Elektromobilis elektromobilis)
                 {
@@ -200,6 +263,11 @@ namespace AutomobiliuNuoma.Repositories
                         "SET BaterijosTalpa = @BaterijosTalpa " +
                         "WHERE Id = @Id";
                     db.Execute(sqlElektra, new { elektromobilis.BaterijosTalpa, Id = id});
+
+                    const string sqlKaina = "UPDATE AutomobiliuParosKaina " +
+                        "SET Id = @Id, Kaina = @Kaina " +
+                        "WHERE Id = @Id";
+                    db.Execute(sqlKaina, new { Id = id, elektromobilis.Kaina });
                 }
             }
         }
@@ -210,19 +278,27 @@ namespace AutomobiliuNuoma.Repositories
 
                 Automobilis automobilis = GautiAutomobiliPagalId(id);
 
-                const string sql = "DELETE FROM Automobiliai WHERE Id = @Id";
-                db.Execute(sql, new { Id = id });
+                
 
                 if (automobilis is NaftosKuroAutomobilis)
                 {
                     const string sqlNafta = "DELETE FROM NaftosKuroAutomobiliai WHERE Id = @Id";
                     db.Execute(sqlNafta, new { Id = id });
+
+                    const string sqlKaina = "DELETE FROM AutomobiliuParosKaina WHERE Id = @Id";
+                    db.Execute(sqlKaina, new { Id = id });
                 }
                 else if (automobilis is Elektromobilis)
                 {
                     const string sqlElektra = "DELETE FROM Elektromobiliai WHERE Id = @Id";
                     db.Execute(sqlElektra, new { Id = id });
+
+                    const string sqlKaina = "DELETE FROM AutomobiliuParosKaina WHERE Id = @Id";
+                    db.Execute(sqlKaina, new { Id = id });
                 }
+
+                const string sql = "DELETE FROM Automobiliai WHERE Id = @Id";
+                db.Execute(sql, new { Id = id });
             }
         }
         #endregion
@@ -286,27 +362,70 @@ namespace AutomobiliuNuoma.Repositories
         {
             using (IDbConnection db = new SqlConnection(_connectionString))
             {
-                const string sql = @"SELECT * FROM Nuoma";
+                const string sql = @"
+                SELECT
+                    N.Id,
+                    N.AutomobilioId,
+                    N.KlientoId,
+                    N.NuomosData,
+                    N.GrazinimoData,
+                    S.Suma  
+                FROM Nuoma N
+                LEFT JOIN Saskaitos S ON N.Id = S.NuomosId
+                ";
+                var results = db.Query<dynamic>(sql);
 
-                return db.Query<Nuoma>(sql);
+                List<Nuoma> nuomos = new List<Nuoma>();
+                foreach (var row in results)
+                {
+                    Nuoma nuoma = new Nuoma(row.Id, row.AutomobilioId, row.KlientoId, row.NuomosData, row.GrazinimoData, decimal.Parse(row.Suma.ToString(), CultureInfo.GetCultureInfo("lt-LT")));
+                    nuomos.Add(nuoma);
+                }
+
+                return nuomos;
             }
         }
         public Nuoma GautiNuomaPagalId(int id)
         {
             using (IDbConnection db = new SqlConnection(_connectionString))
             {
-                const string sql = @"SELECT * FROM Nuoma WHERE Id = @Id";
-                return db.QuerySingleOrDefault<Nuoma>(sql, new { Id = id });
+                const string sql = @"
+                SELECT
+                    N.Id,
+                    N.AutomobilioId,
+                    N.KlientoId,
+                    N.NuomosData,
+                    N.GrazinimoData,
+                    S.Suma  
+                FROM Nuoma N
+                LEFT JOIN Saskaitos S ON N.Id = S.NuomosId
+                WHERE N.Id = @Id
+                ";
+                var results = db.Query<dynamic>(sql, new { Id = id} );
+
+                foreach (var row in results)
+                {
+                    Nuoma nuoma = new Nuoma(row.Id, row.AutomobilioId, row.KlientoId, row.NuomosData, row.GrazinimoData, decimal.Parse(row.Suma.ToString(), CultureInfo.GetCultureInfo("lt-LT")));
+                    return nuoma;
+                }
+
+                return null;
             }
         }
         public void PridetiNuoma(Nuoma nuoma)
         {
             using (IDbConnection db = new SqlConnection(_connectionString))
             {
-                const string sql = "INSERT INTO Nuoma (AutomobilioId, KlientoId, NuomosPradzia, GrazinimoData) " +
-                    "VALUES (@AutomobilioId, @KlientoId, @NuomosPradzia, @GrazinimoData)";
+                const string sql = "INSERT INTO Nuoma (AutomobilioId, KlientoId, NuomosData, GrazinimoData) " +
+                    "VALUES (@AutomobilioId, @KlientoId, @NuomosPradzia, @GrazinimoData); " +
+                    "SELECT SCOPE_IDENTITY();";
 
-                db.Execute(sql, nuoma);
+                int Id = db.ExecuteScalar<int>(sql, new { nuoma.AutomobilioId, nuoma.KlientoId, nuoma.NuomosPradzia, nuoma.GrazinimoData });
+
+                const string sqlSaskaita = "INSERT INTO Saskaitos (NuomosId, Suma) " +
+                    "VALUES (@NuomosId, @Suma)";
+
+                db.Execute(sqlSaskaita, new { NuomosId = Id, nuoma.Suma });
             }
         }
         public void AtnaujintiNuoma(Nuoma nuoma, int id)
@@ -316,17 +435,29 @@ namespace AutomobiliuNuoma.Repositories
                 const string sql = "UPDATE Nuoma SET " +
                     "AutomobilioId = @AutomobilioId, " +
                     "KlientoId = @KlientoId, " +
-                    "NuomosPradzia = @NuomosPradzia, " +
+                    "NuomosData = @NuomosPradzia, " +
                     "GrazinimoData = @GrazinimoData " +
                     "WHERE Id = @Id";
 
                 db.Execute(sql, new { nuoma.AutomobilioId, nuoma.KlientoId, nuoma.NuomosPradzia, nuoma.GrazinimoData, Id = id });
+
+                const string sqlSaskaita = "UPDATE Saskaitos SET " +
+                    "Suma = @Suma " +
+                    "WHERE NuomosId = @NuomosId";
+
+                db.Execute(sqlSaskaita, new { NuomosId = id, nuoma.Suma });
             }
         }
         public void IstrintiNuoma(int id)
         {
             using (IDbConnection db = new SqlConnection(_connectionString))
             {
+                
+
+                const string sqlSaskaita = "DELETE FROM Saskaitos WHERE NuomosId = @Id";
+
+                db.Execute(sqlSaskaita, new { Id = id });
+
                 const string sql = "DELETE FROM Nuoma WHERE Id = @Id";
 
                 db.Execute(sql, new { Id = id });

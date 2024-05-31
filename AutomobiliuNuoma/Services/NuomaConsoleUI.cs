@@ -66,10 +66,15 @@ namespace AutomobiliuNuoma.Services
                                     IstrintiAutomobili();
                                     break;
                                 case 0:
-                                    return;
+                                    break;
 
                                 default:
                                     break;
+                            }
+
+                            if (number == 0)
+                            {
+                                break; // Išeiti iš vidinio while ciklo
                             }
 
                             Console.WriteLine("Press any key to continue...");
@@ -107,12 +112,16 @@ namespace AutomobiliuNuoma.Services
                                     break;
 
                                 case 0:
-                                    return;
+                                    break;
 
                                 default:
                                     break;
                             }
 
+                            if (number == 0)
+                            {
+                                break; // Išeiti iš vidinio while ciklo
+                            }
                             Console.WriteLine("Press any key to continue...");
                             Console.ReadKey();
                         }
@@ -147,12 +156,16 @@ namespace AutomobiliuNuoma.Services
                                     break;
 
                                 case 0:
-                                    return;
+                                    break;
 
                                 default:
                                     break;
                             }
 
+                            if (number == 0)
+                            {
+                                break; // Išeiti iš vidinio while ciklo
+                            }
                             Console.WriteLine("Press any key to continue...");
                             Console.ReadKey();
                         }
@@ -199,15 +212,17 @@ namespace AutomobiliuNuoma.Services
             Console.WriteLine("Įveskite metus: ");
             int metai = int.Parse(Console.ReadLine());
 
-
             string registracijosNumeris = $"{marke}-{modelis}-{metai}";
+
+            Console.WriteLine("Įveskite paros kaina: ");
+            decimal kaina = Decimal.Parse(Console.ReadLine());
 
             if (tipas == 1)
             {
                 Console.WriteLine("Įveskite bako talpą: ");
                 int bakoTalpa = int.Parse(Console.ReadLine());
 
-                var naftosKuroAutomobilis = new NaftosKuroAutomobilis(marke, modelis, metai, registracijosNumeris, bakoTalpa);
+                var naftosKuroAutomobilis = new NaftosKuroAutomobilis(marke, modelis, metai, registracijosNumeris, bakoTalpa, kaina);
                 _nuomaService.RegistruotiAutomobili(naftosKuroAutomobilis);
             }
             else if (tipas == 2)
@@ -215,7 +230,7 @@ namespace AutomobiliuNuoma.Services
                 Console.WriteLine("Įveskite baterijos talpą: ");
                 int baterijosTalpa = int.Parse(Console.ReadLine());
 
-                var elektromobilis = new Elektromobilis(marke, modelis, metai, registracijosNumeris, baterijosTalpa);
+                var elektromobilis = new Elektromobilis(marke, modelis, metai, registracijosNumeris, baterijosTalpa, kaina);
                 _nuomaService.RegistruotiAutomobili(elektromobilis);
             }
             
@@ -338,15 +353,18 @@ namespace AutomobiliuNuoma.Services
 
             string registracijosNumeris = $"{marke}-{modelis}-{metai}";
 
+            Console.WriteLine("Įveskite paros kaina: ");
+            decimal kaina = Decimal.Parse(Console.ReadLine());
+
             Automobilis automobilis = new Automobilis();
             
             if (number == 1)
             {
-                automobilis = new NaftosKuroAutomobilis(marke, modelis, metai, registracijosNumeris, talpa);
+                automobilis = new NaftosKuroAutomobilis(marke, modelis, metai, registracijosNumeris, talpa, kaina);
             }
             else if (number == 2)
             {
-                automobilis = new Elektromobilis(marke, modelis, metai, registracijosNumeris, talpa);
+                automobilis = new Elektromobilis(marke, modelis, metai, registracijosNumeris, talpa, kaina);
             }
 
 
@@ -453,7 +471,21 @@ namespace AutomobiliuNuoma.Services
             Console.WriteLine("Įveskite nuomos pabaigos datą (YYYY-MM-DD): ");
             DateTime nuomosPabaiga = DateTime.Parse(Console.ReadLine());
 
-            Nuoma newNuoma = new Nuoma(automobilioId, klientoId, nuomosPradzia, nuomosPabaiga);
+            decimal kaina = 0;
+            Automobilis automobilis = _nuomaService.GautiAutomobiliPagalId(automobilioId);
+            if (automobilis is NaftosKuroAutomobilis naftosKuroAutomobilis)
+            {
+                kaina = naftosKuroAutomobilis.Kaina;
+            }
+            if (automobilis is Elektromobilis elektromobilis)
+            {
+                kaina = elektromobilis.Kaina;
+            }
+
+            int days = (int)(nuomosPabaiga - nuomosPradzia).TotalDays;
+            decimal suma = kaina *days;
+
+            Nuoma newNuoma = new Nuoma(automobilioId, klientoId, nuomosPradzia, nuomosPabaiga, suma);
 
             List<Nuoma> sarasas = _nuomaService.GautiVisasNuomas().ToList();
             if(sarasas.Count == 0)
@@ -521,7 +553,21 @@ namespace AutomobiliuNuoma.Services
             Console.WriteLine("Iveskite nauja nuomos pabaigos datą (YYYY-MM-DD): ");
             DateTime naujaPabaiga = DateTime.Parse(Console.ReadLine());
 
-            Nuoma newNuoma = new Nuoma(nuoma.AutomobilioId, nuoma.KlientoId, nuoma.NuomosPradzia, naujaPabaiga);
+            decimal kaina = 0;
+            Automobilis automobilis = _nuomaService.GautiAutomobiliPagalId(number);
+            if (automobilis is NaftosKuroAutomobilis naftosKuroAutomobilis)
+            {
+                kaina = naftosKuroAutomobilis.Kaina;
+            }
+            if (automobilis is Elektromobilis elektromobilis)
+            {
+                kaina = elektromobilis.Kaina;
+            }
+
+            int days = (int)(naujaPabaiga - nuoma.NuomosPradzia).TotalDays;
+            decimal suma = kaina * days;
+
+            Nuoma newNuoma = new Nuoma(nuoma.AutomobilioId, nuoma.KlientoId, nuoma.NuomosPradzia, naujaPabaiga, suma);
 
             _nuomaService.AtnaujintiNuoma(newNuoma, number);
         }
