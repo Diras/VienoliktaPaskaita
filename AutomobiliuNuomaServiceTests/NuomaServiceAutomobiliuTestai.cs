@@ -10,7 +10,7 @@ namespace AutomobiliuNuomaServiceTests
     public class NuomaServiceAutomobiliuTestai
     {
         private  Mock<IDatabaseRepository> _repositoryMock;
-        private  NuomaService _nuomaService;
+        private  INuomaService _nuomaService;
 
         public NuomaServiceAutomobiliuTestai()
         {
