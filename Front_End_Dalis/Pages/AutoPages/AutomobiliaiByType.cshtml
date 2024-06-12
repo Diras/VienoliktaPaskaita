@@ -1,0 +1,79 @@
+﻿@page "/Automobiliai/ByType"
+@using AutomobiliuNuoma.Models
+@model AutomobiliaiByTypeModel
+@{
+    ViewData["Title"] = "Automobiliai pagal tipą";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<h2>Pasirinkite, kokio tipo automobilius norite pamatyti:</h2>
+
+<form method="get">
+    <input type="hidden" id="Tipas" name="Tipas" />
+    <button type="button" class="btn btn-primary" onclick="document.getElementById('Tipas').value='Elektromobilis'; this.form.submit();">Elektromobilis</button>
+    <button type="button" class="btn btn-secondary" onclick="document.getElementById('Tipas').value='NaftosKuroAutomobilis'; this.form.submit();">NaftosKuroAutomobilis</button>
+</form>
+
+@if (Model.Elektromobiliai != null)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Markė</th>
+                <th>Modelis</th>
+                <th>Metai</th>
+                <th>Baterijos/Bako Talpa</th>
+                <th>Kaina</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (Elektromobilis elektromobilis in Model.Elektromobiliai)
+            {
+               
+                    <tr>
+                        <td>@elektromobilis.Id</td>
+                        <td>@elektromobilis.Marke</td>
+                        <td>@elektromobilis.Modelis</td>
+                        <td>@elektromobilis.Metai</td>
+                        <td>@elektromobilis.BaterijosTalpa</td>
+                        <td>@elektromobilis.Kaina</td>
+                    </tr>
+                
+                
+            }
+        </tbody>
+    </table>
+}
+@if (Model.NaftosKuroAutomobiliai != null)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Markė</th>
+                <th>Modelis</th>
+                <th>Metai</th>
+                <th>Baterijos/Bako Talpa</th>
+                <th>Kaina</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (NaftosKuroAutomobilis naftosKuroAutomobilis in Model.NaftosKuroAutomobiliai)
+            {
+
+                <tr>
+                    <td>@naftosKuroAutomobilis.Id</td>
+                    <td>@naftosKuroAutomobilis.Marke</td>
+                    <td>@naftosKuroAutomobilis.Modelis</td>
+                    <td>@naftosKuroAutomobilis.Metai</td>
+                    <td>@naftosKuroAutomobilis.BakoTalpa</td>
+                    <td>@naftosKuroAutomobilis.Kaina</td>
+                </tr>
+
+
+            }
+        </tbody>
+    </table>
+}

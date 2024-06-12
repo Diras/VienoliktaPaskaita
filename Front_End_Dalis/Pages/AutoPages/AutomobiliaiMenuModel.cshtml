@@ -1,0 +1,17 @@
+﻿@page "AutomobiliaiMenuModel"
+@model Front_End_Dalis.Pages.AutoPages.AutomobiliaiMenuModel
+@{
+    ViewData["Title"] = "Automobilių valdymo meniu";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div class="list-group">
+    <a href="/Automobiliai" class="list-group-item list-group-item-action">Peržiūrėti visus automobilius</a>
+    <a href="/Automobiliai/Add" class="list-group-item list-group-item-action">Pridėti automobilį</a>
+    <a href="/Automobiliai/ByType" class="list-group-item list-group-item-action">Parodyti automobilius pagal tipą</a>
+    <a href="/Automobiliai/ById" class="list-group-item list-group-item-action">Parodyti automobilį pagal ID</a>
+    <a href="/Automobiliai/Update" class="list-group-item list-group-item-action">Atnaujinti automobilį</a>
+    <a href="/Automobiliai/ByName" class="list-group-item list-group-item-action">Surasti Automobili pagal marke arba modeli</a>
+    <a href="/Automobiliai/Delete" class="list-group-item list-group-item-action">Ištrinti automobilį</a>
+</div>

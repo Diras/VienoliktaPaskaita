@@ -1,0 +1,80 @@
+﻿@page "/Automobiliai/ByName"
+@model Front_End_Dalis.Pages.AutoPages.AutomobiliaiByNameModel
+@{
+    ViewData["Title"] = "Automobilių paieška";
+}
+
+<h2>Automobilių paieška</h2>
+
+<form method="get">
+    <div class="form-group">
+        <label for="pavadinimas">Įveskite markę arba modelį:</label>
+        <input type="text" class="form-control" id="pavadinimas" name="pavadinimas" value="@Model.Pavadinimas" />
+    </div>
+    <button type="submit" class="btn btn-primary">Ieškoti</button>
+</form>
+
+@if (Model.Automobiliai != null && Model.Automobiliai.elektromobiliai.Any())
+{
+    <h3>Elektromobiliai:</h3>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Markė</th>
+                <th>Modelis</th>
+                <th>Metai</th>
+                <th>Registracijos Numeris</th>
+                <th>Kaina</th>
+                <th>Baterijos Talpa</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var automobilis in Model.Automobiliai.elektromobiliai)
+            {
+                <tr>
+                    <td>@automobilis.Marke</td>
+                    <td>@automobilis.Modelis</td>
+                    <td>@automobilis.Metai</td>
+                    <td>@automobilis.RegistracijosNumeris</td>
+                    <td>@automobilis.Kaina</td>
+                    <td>@automobilis.BaterijosTalpa</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@if (Model.Automobiliai != null && Model.Automobiliai.naftosKuroAutomobiliai.Any())
+{
+    <h3>Naftos kuro automobiliai:</h3>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Markė</th>
+                <th>Modelis</th>
+                <th>Metai</th>
+                <th>Registracijos Numeris</th>
+                <th>Kaina</th>
+                <th>Bako Talpa</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var automobilis in Model.Automobiliai.naftosKuroAutomobiliai)
+            {
+                <tr>
+                    <td>@automobilis.Marke</td>
+                    <td>@automobilis.Modelis</td>
+                    <td>@automobilis.Metai</td>
+                    <td>@automobilis.RegistracijosNumeris</td>
+                    <td>@automobilis.Kaina</td>
+                    <td>@automobilis.BakoTalpa</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else if (Model.Pavadinimas != null)
+{
+    <p>Automobilių nerasta.</p>
+}
+

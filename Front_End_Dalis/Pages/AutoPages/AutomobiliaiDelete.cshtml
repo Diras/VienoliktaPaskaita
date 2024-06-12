@@ -1,0 +1,15 @@
+﻿@page "/Automobiliai/Delete"
+@model AutomobiliaiDeleteModel
+@{
+    ViewData["Title"] = "Ištrinti automobilį";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<form method="post">
+    <div class="form-group">
+        <label for="Id">Automobilio ID</label>
+        <input type="number" class="form-control" id="Id" name="Id" />
+    </div>
+    <button type="submit" class="btn btn-danger">Ištrinti</button>
+</form>

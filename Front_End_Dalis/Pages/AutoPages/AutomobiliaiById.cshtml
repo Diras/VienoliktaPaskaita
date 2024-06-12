@@ -1,0 +1,59 @@
+﻿@page "/Automobiliai/ById"
+@using AutomobiliuNuoma.Models
+@model AutomobiliaiByIdModel
+@{
+    ViewData["Title"] = "Automobilis pagal ID";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<form method="get">
+    <div class="form-group">
+        <label for="Id">Automobilio ID</label>
+        <input type="number" class="form-control" id="Id" name="Id" />
+    </div>
+    <button type="submit" class="btn btn-primary">Ieškoti</button>
+</form>
+
+@if (Model.Automobilis != null)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Markė</th>
+                <th>Modelis</th>
+                <th>Metai</th>
+                <th>Baterijos/Bako Talpa</th>
+                <th>Kaina</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                @if(Model.Automobilis is Elektromobilis elektromobilis)
+                {
+            <tr>
+                <td>@elektromobilis.Id</td>
+                <td>@elektromobilis.Marke</td>
+                <td>@elektromobilis.Modelis</td>
+                <td>@elektromobilis.Metai</td>
+                <td>@elektromobilis.BaterijosTalpa</td>
+                <td>@elektromobilis.Kaina</td>
+            </tr>
+            }
+                else if (Model.Automobilis is NaftosKuroAutomobilis naftosKuroAutomobilis)
+            {
+            <tr>
+                <td>@naftosKuroAutomobilis.Id</td>
+                <td>@naftosKuroAutomobilis.Marke</td>
+                <td>@naftosKuroAutomobilis.Modelis</td>
+                <td>@naftosKuroAutomobilis.Metai</td>
+                <td>@naftosKuroAutomobilis.BakoTalpa</td>
+                <td>@naftosKuroAutomobilis.Kaina</td>
+            </tr>
+            }
+                
+            
+        </tbody>
+    </table>
+}

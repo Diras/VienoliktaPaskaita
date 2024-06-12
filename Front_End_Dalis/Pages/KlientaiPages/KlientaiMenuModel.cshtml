@@ -1,0 +1,12 @@
+﻿@page
+@model KlientaiMenuModel
+@{
+    ViewData["Title"] = "Klientų valdymo meniu";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div class="list-group">
+    <a href="/Klientai" class="list-group-item list-group-item-action">Peržiūrėti visus klientus</a>
+    <a href="/Klientai/ByName" class="list-group-item list-group-item-action">Surasti klientus pagal varda arba pavarde</a>
+</div>

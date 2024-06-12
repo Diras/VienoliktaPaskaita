@@ -2,18 +2,29 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace AutomobiliuNuoma.Models
 {
     public class Klientas
     {
-        public int Id { get; set; }
-        public string Vardas { get; set; }
-        public string Pavarde { get; set; }
-        public DateTime GimimoData { get; set; }
-        public DateTime RegistracijosData { get; set; }
+		[JsonPropertyName("id")]
+		public int Id { get; set; }
+		[JsonPropertyName("vardas")]
+		public string Vardas { get; set; }
+		[JsonPropertyName("pavarde")]
+		public string Pavarde { get; set; }
+		[JsonPropertyName("gimimoData")]
+		public DateTime GimimoData { get; set; }
+		[JsonPropertyName("registracijosData")]
+		public DateTime RegistracijosData { get; set; }
 
+
+        public Klientas()
+        {
+
+        }
         public Klientas(string vardas, string pavarde, DateTime gimimoData, DateTime registracijosData) 
         {
             Vardas = vardas;

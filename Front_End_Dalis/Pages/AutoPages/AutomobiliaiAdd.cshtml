@@ -1,0 +1,118 @@
+﻿@page "/Automobiliai/Add"
+@model AutomobiliaiAddModel
+@{
+    ViewData["Title"] = "Pridėti automobilį";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<form id="automobilisForm">
+    <div class="form-group">
+        <label for="Tipas">Pasirinkite automobilio tipą:</label>
+        <select class="form-control" id="Tipas" name="AutomobilioTipas">
+            <option value="Elektromobilis">Elektromobilis</option>
+            <option value="NaftosKuroAutomobilis">Naftos Kuro Automobilis</option>
+        </select>
+    </div>
+
+    <!-- Bendri laukai -->
+    <div class="form-group">
+        <label for="Marke">Markė</label>
+        <input type="text" class="form-control" id="Marke" name="Marke" required />
+    </div>
+    <div class="form-group">
+        <label for="Modelis">Modelis</label>
+        <input type="text" class="form-control" id="Modelis" name="Modelis" required />
+    </div>
+    <div class="form-group">
+        <label for="Metai">Metai</label>
+        <input type="number" class="form-control" id="Metai" name="Metai" required />
+    </div>
+    <div class="form-group">
+        <label for="Kaina">Kaina</label>
+        <input type="number" step="0.01" class="form-control" id="Kaina" name="Kaina" required />
+    </div>
+
+    <!-- Tik elektromobiliui -->
+    <div id="ElektromobilisFields" style="display:none;">
+        <div class="form-group">
+            <label for="BaterijosTalpa">Baterijos talpa</label>
+            <input type="number" class="form-control" id="BaterijosTalpa" name="BaterijosTalpa" />
+        </div>
+    </div>
+
+    <!-- Tik naftos kuro automobiliui -->
+    <div id="NaftosKuroAutomobilisFields" style="display:none;">
+        <div class="form-group">
+            <label for="BakoTalpa">Bako talpa</label>
+            <input type="number" class="form-control" id="BakoTalpa" name="BakoTalpa" />
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Pridėti</button>
+</form>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var tipas = document.getElementById('Tipas');
+        var elektromobilisFields = document.getElementById('ElektromobilisFields');
+        var naftosKuroAutomobilisFields = document.getElementById('NaftosKuroAutomobilisFields');
+
+        tipas.addEventListener('change', function () {
+            var selectedTipas = this.value;
+            if (selectedTipas === 'Elektromobilis') {
+                elektromobilisFields.style.display = 'block';
+                naftosKuroAutomobilisFields.style.display = 'none';
+            } else if (selectedTipas === 'NaftosKuroAutomobilis') {
+                elektromobilisFields.style.display = 'none';
+                naftosKuroAutomobilisFields.style.display = 'block';
+            }
+        });
+
+        var automobilisForm = document.getElementById('automobilisForm');
+
+        automobilisForm.addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            var automobilioTipas = tipas.value;
+            var apiUrl = '';
+
+            if (automobilioTipas === 'Elektromobilis') {
+                apiUrl = 'https://localhost:7046/api/Automobiliu/InsertElektromobilis';
+            } else if (automobilioTipas === 'NaftosKuroAutomobilis') {
+                apiUrl = 'https://localhost:7046/api/Automobiliu/InsertNaftosKuroAutomobilis';
+            }
+
+            var marke = document.getElementById('Marke').value;
+            var modelis = document.getElementById('Modelis').value;
+            var metai = document.getElementById('Metai').value;
+            var kaina = document.getElementById('Kaina').value;
+
+            var registracijosNumeris = marke + '-' + modelis + '-' + metai;
+
+            var formData = new FormData();
+            formData.append('Marke', marke);
+            formData.append('Modelis', modelis);
+            formData.append('Metai', metai);
+            formData.append('Kaina', kaina);
+            formData.append('RegistracijosNumeris', registracijosNumeris);
+
+            if (automobilioTipas === 'Elektromobilis') {
+                formData.append('BaterijosTalpa', document.getElementById('BaterijosTalpa').value);
+            } else if (automobilioTipas === 'NaftosKuroAutomobilis') {
+                formData.append('BakoTalpa', document.getElementById('BakoTalpa').value);
+            }
+
+            fetch(apiUrl, {
+                method: 'POST',
+                mode: 'no-cors',
+                body: formData
+            })
+                
+             alert('Automobilis sėkmingai pridėtas');
+            window.location.href = '/AutoPages/AutomobiliaiMenuModel';
+                 
+        });
+    });
+</script>

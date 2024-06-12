@@ -236,11 +236,11 @@ namespace AutomobiliuNuoma.Services
             
         }
 
-        private void AtvaizduotiVisusAutomobilius()
+        private async void AtvaizduotiVisusAutomobilius()
         {
             Console.WriteLine("Visi automobiliai: ");
-            List<Automobilis> automobiliuSarasas = _nuomaService.GautiVisusAutomobilius().ToList();
-            if(automobiliuSarasas.Count == 0)
+            List<Automobilis> automobiliuSarasas = (await _nuomaService.GautiVisusAutomobilius()).ToList();
+            if (automobiliuSarasas.Count == 0)
             {
                 Console.WriteLine("Siuo metu automobiliu nera!");
             }

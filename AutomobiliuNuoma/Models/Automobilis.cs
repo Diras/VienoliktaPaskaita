@@ -1,18 +1,34 @@
-﻿using System;
+﻿using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace AutomobiliuNuoma.Models
 {
+    [BsonKnownTypes(typeof(Elektromobilis), typeof(NaftosKuroAutomobilis))]
     public class Automobilis
     {
+        [JsonPropertyName("id")]
         public int Id { get; set; }
+
+        [JsonPropertyName("marke")]
         public string Marke { get; set; }
+
+        [JsonPropertyName("modelis")]
         public string Modelis { get; set; }
+
+        [JsonPropertyName("metai")]
         public int Metai { get; set; }
+
+        [JsonPropertyName("registracijosNumeris")]
         public string RegistracijosNumeris { get; set; }
+
+        [BsonId]
+        public ObjectId innerId { get; set; }
 
         public Automobilis() 
         { 

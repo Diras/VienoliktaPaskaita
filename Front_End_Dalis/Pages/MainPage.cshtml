@@ -1,0 +1,37 @@
+﻿@page "/"
+@model Front_End_Dalis.Pages.MainPageModel
+@{
+    ViewData["Title"] = "Pagrindinis puslapis";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div class="row">
+    <div class="col-md-4">
+        <a href="/AutoPages/AutomobiliaiMenuModel/AutomobiliaiMenuModel" class="btn btn-primary btn-lg btn-block">
+            <img src="~/Images/Automobiliai.jpg" alt="Automobiliai" class="img-fluid" style="max-height: 100px; margin-bottom: 10px;" />
+            Automobiliai
+        </a>
+    </div>
+    <div class="col-md-4">
+        <a href="/KlientaiPages/KlientaiMenuModel" class="btn btn-primary btn-lg btn-block">
+            <img src="~/Images/Klientai.jpg" alt="Klientai" class="img-fluid" style="max-height: 100px; margin-bottom: 10px;" />
+            Klientai
+        </a>
+    </div>
+    <div class="col-md-4">
+        <a href="/Nuoma" class="btn btn-primary btn-lg btn-block">
+            <img src="~/Images/Nuoma.jpg" alt="Nuoma" class="img-fluid" style="max-height: 100px; margin-bottom: 10px;" />
+            Nuoma
+        </a>
+    </div>
+</div>
+
+<style>
+    .btn img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+        margin: 0 auto 10px auto;
+    }
+</style>

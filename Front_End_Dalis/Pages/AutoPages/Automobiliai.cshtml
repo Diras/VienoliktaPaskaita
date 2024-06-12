@@ -1,0 +1,51 @@
+﻿@page "/Automobiliai"
+@using AutomobiliuNuoma.Models
+@model Front_End_Dalis.Pages.AutoPages.AutomobiliaiModel
+@{
+    ViewData["Title"] = "Automobilių sąrašas";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Markė</th>
+            <th>Modelis</th>
+            <th>Metai</th>
+            <th>RegistracijosNumeris</th>
+            <th>Talpa(Bako/Baterijos)</th>
+            <th>Kaina</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var automobilis in Model.Automobil.elektromobiliai)
+        {
+            
+                <tr>
+                <td>@automobilis.Id</td>
+                <td>@automobilis.Marke</td>
+                <td>@automobilis.Modelis</td>
+                <td>@automobilis.Metai</td>
+                <td>@automobilis.RegistracijosNumeris</td>
+                <td>@automobilis.BaterijosTalpa</td>
+                <td>@automobilis.Kaina</td>
+                </tr>
+        }
+        @foreach (var automobilis in Model.Automobil.naftosKuroAutomobiliai)
+        {
+
+            <tr>
+                <td>@automobilis.Id</td>
+                <td>@automobilis.Marke</td>
+                <td>@automobilis.Modelis</td>
+                <td>@automobilis.Metai</td>
+                <td>@automobilis.RegistracijosNumeris</td>
+                <td>@automobilis.BakoTalpa</td>
+                <td>@automobilis.Kaina</td>
+            </tr>
+        }
+        
+    </tbody>
+</table>

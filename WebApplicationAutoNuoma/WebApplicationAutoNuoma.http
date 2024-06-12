@@ -1,0 +1,6 @@
+@WebApplicationAutoNuoma_HostAddress = http://localhost:5088
+
+GET {{WebApplicationAutoNuoma_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

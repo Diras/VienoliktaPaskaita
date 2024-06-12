@@ -20,6 +20,7 @@ namespace AutomobiliuNuoma.Contracts
 
         // Klientų operacijos
         IEnumerable<Klientas> GautiVisusKlientus();
+        IEnumerable<Klientas> GautiVisusKlientusPagalPavadinima(string pavadinimas);
         Klientas GautiKlientaPagalId(int id);
         void PridetiKlienta(Klientas klientas);
         void AtnaujintiKlienta(Klientas klientas, int id);

@@ -1,0 +1,31 @@
+﻿@page "/Klientai"
+@model KlientaiModel
+@{
+    ViewData["Title"] = "Klientų valdymas";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Vardas</th>
+            <th>Pavardė</th>
+            <th>Gimimo Data</th>
+            <th>Registracijos Data</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var klientas in Model.Klientai)
+        {
+            <tr>
+                <td>@klientas.Id</td>
+                <td>@klientas.Vardas</td>
+                <td>@klientas.Pavarde</td>
+                <td>@klientas.GimimoData.ToShortDateString()</td>
+                <td>@klientas.RegistracijosData.ToShortDateString()</td>
+            </tr>
+        }
+    </tbody>
+</table>

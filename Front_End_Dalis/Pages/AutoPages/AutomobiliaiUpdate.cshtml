@@ -1,0 +1,82 @@
+﻿@page "/Automobiliai/Update"
+@model AutomobiliaiUpdateModel
+@{
+    ViewData["Title"] = "Atnaujinti automobilį";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<form method="post">
+    <div class="form-group">
+        <label for="Id">Automobilio ID</label>
+        <input type="number" class="form-control" id="Id" name="Id" />
+    </div>
+    <div class="form-group">
+        <label for="Marke">Markė</label>
+        <input type="text" class="form-control" id="Marke" name="Marke" />
+    </div>
+    <div class="form-group">
+        <label for="Modelis">Modelis</label>
+        <input type="text" class="form-control" id="Modelis" name="Modelis" />
+    </div>
+    <div class="form-group">
+        <label for="Metai">Metai</label>
+        <input type="number" class="form-control" id="Metai" name="Metai" />
+    </div>
+    <div class="form-group">
+        <label for="RegistracijosNumeris">Registracijos numeris</label>
+        <input type="text" class="form-control" id="RegistracijosNumeris" name="RegistracijosNumeris" readonly />
+    </div>
+    <div class="form-group">
+        <label for="Kaina">Kaina</label>
+        <input type="number" step="0.01" class="form-control" id="Kaina" name="Kaina" />
+    </div>
+    <div class="form-group">
+        <label for="Tipas">Tipas</label>
+        <select class="form-control" id="Tipas" name="Tipas">
+            <option value="Elektromobilis">Elektromobilis</option>
+            <option value="NaftosKuroAutomobilis">Naftos Kuro Automobilis</option>
+        </select>
+    </div>
+    <div class="form-group" id="BaterijosTalpaField" style="display: none;">
+        <label for="BaterijosTalpa">Baterijos talpa</label>
+        <input type="number" class="form-control" id="BaterijosTalpa" name="BaterijosTalpa" />
+    </div>
+    <div class="form-group" id="BakoTalpaField" style="display: none;">
+        <label for="BakoTalpa">Bako talpa</label>
+        <input type="number" class="form-control" id="BakoTalpa" name="BakoTalpa" />
+    </div>
+    <button type="submit" class="btn btn-primary">Atnaujinti</button>
+</form>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var marke = document.getElementById('Marke');
+        var modelis = document.getElementById('Modelis');
+        var metai = document.getElementById('Metai');
+        var registracijosNumeris = document.getElementById('RegistracijosNumeris');
+        var tipas = document.getElementById('Tipas');
+        var baterijosTalpaField = document.getElementById('BaterijosTalpaField');
+        var bakoTalpaField = document.getElementById('BakoTalpaField');
+
+        marke.addEventListener('input', updateRegistracijosNumeris);
+        modelis.addEventListener('input', updateRegistracijosNumeris);
+        metai.addEventListener('input', updateRegistracijosNumeris);
+        tipas.addEventListener('change', updateTalpaField);
+
+        function updateRegistracijosNumeris() {
+            registracijosNumeris.value = marke.value + '-' + modelis.value + '-' + metai.value;
+        }
+
+        function updateTalpaField() {
+            var selectedTipas = tipas.value;
+            if (selectedTipas === 'Elektromobilis') {
+                baterijosTalpaField.style.display = 'block';
+                bakoTalpaField.style.display = 'none';
+            } else if (selectedTipas === 'NaftosKuroAutomobilis') {
+                baterijosTalpaField.style.display = 'none';
+                bakoTalpaField.style.display = 'block';
+            }
+        }
+    });
+</script>

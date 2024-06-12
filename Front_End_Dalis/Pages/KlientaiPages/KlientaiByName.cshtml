@@ -1,0 +1,47 @@
+﻿@page "/Klientai/ByName"
+@model KlientaiByNameModel
+@{
+    ViewData["Title"] = "Klientų paieška pagal vardą ar pavardę";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<form method="get">
+    <div class="form-group">
+        <label for="name">Įveskite kliento vardą ar pavardę:</label>
+        <input type="text" class="form-control" id="name" name="name" value="@Model.Name" />
+    </div>
+    <button type="submit" class="btn btn-primary">Ieškoti</button>
+</form>
+
+@if (Model.Klientai != null && Model.Klientai.Any())
+{
+    <h2>Rasti klientai:</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Vardas</th>
+                <th>Pavardė</th>
+                <th>Gimimo Data</th>
+                <th>Registracijos Data</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var klientas in Model.Klientai)
+            {
+                <tr>
+                    <td>@klientas.Id</td>
+                    <td>@klientas.Vardas</td>
+                    <td>@klientas.Pavarde</td>
+                    <td>@klientas.GimimoData.ToShortDateString()</td>
+                    <td>@klientas.RegistracijosData.ToShortDateString()</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else if (Model.Name != null)
+{
+    <p>Klientų pagal šį vardą ar pavardę nerasta.</p>
+}

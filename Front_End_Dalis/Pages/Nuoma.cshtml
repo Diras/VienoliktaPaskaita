@@ -1,0 +1,33 @@
+﻿@page
+@model Front_End_Dalis.Pages.NuomaModel
+@{
+    ViewData["Title"] = "Nuomos valdymas";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Automobilio Id</th>
+            <th>Kliento Id</th>
+            <th>Nuomos Pradžia</th>
+            <th>Gražinimo Data</th>
+            <th>Suma</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var nuoma in Model.Nuoma)
+        {
+            <tr>
+                <td>@nuoma.Id</td>
+                <td>@nuoma.AutomobilioId</td>
+                <td>@nuoma.KlientoId</td>
+                <td>@nuoma.NuomosPradzia.ToShortDateString()</td>
+                <td>@nuoma.GrazinimoData.ToShortDateString()</td>
+                <td>@nuoma.Suma</td>
+            </tr>
+        }
+    </tbody>
+</table>

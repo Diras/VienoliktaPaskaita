@@ -313,6 +313,16 @@ namespace AutomobiliuNuoma.Repositories
                 return db.Query<Klientas>(sql);
             }
         }
+
+
+        public IEnumerable<Klientas> GautiVisusKlientusPagalPavadinima(string pavadinimas)
+        {
+            using (IDbConnection db = new SqlConnection(_connectionString))
+            {
+                const string sql = @"SELECT * FROM Klientai WHERE Vardas LIKE @Pavadinimas OR Pavarde LIKE @Pavadinimas";
+                return db.Query<Klientas>(sql, new { Pavadinimas = "%" + pavadinimas + "%" });
+            }
+        }
         public Klientas GautiKlientaPagalId(int id)
         {
             using (IDbConnection db = new SqlConnection(_connectionString))

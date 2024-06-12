@@ -2,21 +2,30 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace AutomobiliuNuoma.Models
 {
     public class Nuoma
     {
-        public int Id { get; set; }
-        public int AutomobilioId { get; set; }
-        public int KlientoId { get; set; }
-        public DateTime NuomosPradzia { get; set; }
-        public DateTime GrazinimoData { get; set; }
+		[JsonPropertyName("id")]
+		public int Id { get; set; }
+		[JsonPropertyName("automobilioId")]
+		public int AutomobilioId { get; set; }
+		[JsonPropertyName("klientoId")]
+		public int KlientoId { get; set; }
+		[JsonPropertyName("nuomosPradzia")]
+		public DateTime NuomosPradzia { get; set; }
+		[JsonPropertyName("grazinimoData")]
+		public DateTime GrazinimoData { get; set; }
+		[JsonPropertyName("suma")]
+		public decimal Suma {  get; set; }
 
-        public decimal Suma {  get; set; }
+        public Nuoma()
+        {
 
-
+        }
         public Nuoma(int automobilioId, int klientoId, DateTime grazinimoData, decimal suma)
         {
             AutomobilioId = automobilioId;
