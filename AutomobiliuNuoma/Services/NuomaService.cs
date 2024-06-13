@@ -7,15 +7,20 @@ namespace AutomobiliuNuoma.Services
     public class NuomaService : INuomaService
     {
         private readonly IDatabaseRepository _repository;
+        private readonly IDatabaseRepository _efRepository;
         private readonly IMongoDBRepository _mongoDBRepository;
 
-        public NuomaService(IDatabaseRepository repository, IMongoDBRepository mongoDBRepository)
+        public NuomaService(IDatabaseRepository repository, IMongoDBRepository mongoDBRepository, IDatabaseRepository efRepository)
         {
             _repository = repository;
             _mongoDBRepository = mongoDBRepository;
+            _efRepository = efRepository;
             ICacheControlService cacheControlService = new CacheControlService(_mongoDBRepository);
             cacheControlService.Start();
+            
         }
+
+        public NuomaService() { }
 
         public async Task<IEnumerable<Automobilis>> GautiVisusAutomobilius()
         {
@@ -97,7 +102,7 @@ namespace AutomobiliuNuoma.Services
 
         public IEnumerable<Klientas> GautiVisusKlientus()
         {
-            return _repository.GautiVisusKlientus();
+            return _efRepository.GautiVisusKlientus();
         }
 
         public async Task<List<Klientas>> GautiVisusKlientusPagalPavadinima(string pavadinimas)
@@ -106,7 +111,7 @@ namespace AutomobiliuNuoma.Services
 
             if (klientai == null || !klientai.Any())
             {
-                klientai = _repository.GautiVisusKlientusPagalPavadinima(pavadinimas).ToList();
+                klientai = _efRepository.GautiVisusKlientusPagalPavadinima(pavadinimas).ToList();
                 await _mongoDBRepository.AddAllKlientai(klientai);
             }
 
@@ -115,19 +120,19 @@ namespace AutomobiliuNuoma.Services
 
         public Klientas GautiKlientaPagalId(int id)
         {
-            return _repository.GautiKlientaPagalId(id);
+            return _efRepository.GautiKlientaPagalId(id);
         }
         public void PridetiKlienta(Klientas klientas)
         {
-            _repository.PridetiKlienta(klientas);
+            _efRepository.PridetiKlienta(klientas);
         }
         public void AtnaujintiKlienta(Klientas klientas, int id)
         {
-            _repository.AtnaujintiKlienta(klientas, id);
+            _efRepository.AtnaujintiKlienta(klientas, id);
         }
         public void IstrintiKlienta(int id)
         {
-            _repository.IstrintiKlienta(id);
+            _efRepository.IstrintiKlienta(id);
         }
 
 

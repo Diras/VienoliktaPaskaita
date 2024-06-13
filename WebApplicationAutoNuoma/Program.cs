@@ -3,6 +3,7 @@ using AutomobiliuNuoma.Contracts;
 using AutomobiliuNuoma.Repositories;
 using MongoDB.Driver;
 using Serilog;
+using System.Text.Json;
 
 
 public class Program

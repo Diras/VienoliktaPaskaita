@@ -91,10 +91,11 @@ namespace AutomobiliuNuoma.Services
                             Console.WriteLine("2. Parodyti visus klientus");
                             Console.WriteLine("3. Atnaujinti klieto informacija");
                             Console.WriteLine("4. Istrinti klienta is sistemos");
+                            Console.WriteLine("5. Surasti klientus pagal Varda arba Pavadre");
                             Console.WriteLine("0. Išeiti");
                             Console.Write("Pasirinkite opciją: ");
 
-                            int number = CheckInput(0, 4);
+                            int number = CheckInput(0, 5);
 
                             switch (number)
                             {
@@ -109,6 +110,9 @@ namespace AutomobiliuNuoma.Services
                                     break;
                                 case 4:
                                     IstrintiKlienta();
+                                    break;
+                                case 5:
+                                    SurastiPagalPavadinima();
                                     break;
 
                                 case 0:
@@ -453,6 +457,14 @@ namespace AutomobiliuNuoma.Services
             int number = int.Parse(Console.ReadLine());
 
             _nuomaService.IstrintiKlienta(number);
+        }
+
+        private async Task SurastiPagalPavadinima()
+        {
+            Console.WriteLine("Iveskite vardo arba pavardes dali:");
+            string input = Console.ReadLine();
+            List<Klientas> klientai = await _nuomaService.GautiVisusKlientusPagalPavadinima(input);
+            klientai.ForEach(x => Console.WriteLine(x));
         }
 
         private void PridetiNuoma()

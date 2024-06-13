@@ -27,9 +27,8 @@ namespace Front_End_Dalis.Pages.AutoPages
 
         public async Task<IActionResult> OnPost(int id)
         {
-            string apiUrl = "";
-
-            // Patikriname, koks automobilio tipas ir nustatome API URL
+           
+           
             if (Elektro.BaterijosTalpa != 0)
             {
                 _nuomaAPIService.AtnaujintiElektromobili(id, Elektro);

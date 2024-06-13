@@ -16,9 +16,10 @@ namespace AutomobiliuNuoma
 
             IMongoClient mongoClient = new MongoClient(connectionStringMongo);
             IMongoDBRepository mongoDBRepository = new MongoDBRepository(mongoClient);
-
             IDatabaseRepository repository = new DatabaseRepository(connectionString);
-            INuomaService nuomaService = new NuomaService(repository, mongoDBRepository);
+            IDatabaseRepository efRepository = new EntityRepository();
+
+            INuomaService nuomaService = new NuomaService(repository, mongoDBRepository, efRepository);
             NuomaConsoleUI consoleUI = new NuomaConsoleUI(nuomaService);
 
             consoleUI.Meniu();
